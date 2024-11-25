@@ -1,2 +1,2 @@
 # Schemby
-Command line tool to extract well known relational database schemas into a common file definition
+Command line tool to extract schemas from well known relational databases into a common file definitions
