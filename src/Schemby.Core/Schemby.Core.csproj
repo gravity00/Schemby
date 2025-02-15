@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\README.md;..\..\LICENSE;..\..\logo.png" Pack="true" PackagePath="\"/>
+    <Compile Include="..\..\IsExternalInit.cs" Link="Properties\IsExternalInit.cs" />
+    <None Include="..\..\README.md;..\..\LICENSE;..\..\logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
