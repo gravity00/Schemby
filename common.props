@@ -1,0 +1,40 @@
+<Project>
+
+  <PropertyGroup>
+    <RootNamespace>Schemby</RootNamespace>
+    <Product>Schemby</Product>
+    <Company>Simplesoft</Company>
+    <Copyright>Copyright © 2025 João Simões</Copyright>
+    <Authors>João Simões</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net4.5</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyTitleAttribute>true</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>true</GenerateAssemblyDescriptionAttribute>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageTags>database;schema;specification;analyser</PackageTags>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/gravity00/Schemby</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/gravity00/Schemby.git</RepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.25000</FileVersion>
+    <VersionPrefix>1.0.0-dev001</VersionPrefix>
+  </PropertyGroup>
+
+</Project>
