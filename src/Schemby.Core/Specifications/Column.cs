@@ -5,9 +5,13 @@
 /// </summary>
 /// <param name="Name">The column name</param>
 /// <param name="Type">The column type</param>
-/// <param name="Description">Optional specification description</param>
 public record Column(
     string Name,
-    ColumnType Type,
-    string? Description = null
-);
+    ColumnType Type
+)
+{
+    /// <summary>
+    /// Specification description.
+    /// </summary>
+    public string? Description { get; init; }
+}
