@@ -3,11 +3,11 @@
 /// <summary>
 /// Represents a database specification.
 /// </summary>
+/// <param name="Metadata">The database specification metadata</param>
 /// <param name="Name">The database name</param>
 /// <param name="Tables">Collection of table specifications</param>
-/// <param name="Description">Optional specification description</param>
 public record Database(
+    Metadata Metadata,
     string Name,
-    IEnumerable<Table> Tables,
-    string? Description = null
+    IEnumerable<Table> Tables
 );
