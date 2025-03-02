@@ -11,7 +11,7 @@ public record Table(
 )
 {
     /// <summary>
-    /// Specification description.
+    /// Table description.
     /// </summary>
     public string? Description { get; init; }
 }
