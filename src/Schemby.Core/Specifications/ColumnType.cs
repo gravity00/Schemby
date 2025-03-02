@@ -85,5 +85,9 @@ public enum ColumnType
     /// <summary>
     /// Represents a universally unique identifier column type.
     /// </summary>
-    Uuid
+    Uuid,
+    /// <summary>
+    /// Represents a custom column type.
+    /// </summary>
+    Custom
 }
