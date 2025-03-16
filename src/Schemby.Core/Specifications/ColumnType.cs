@@ -25,6 +25,10 @@ public enum ColumnType
     /// Represents a multiple character column type.
     /// </summary>
     Text,
+    /// <summary>
+    /// Represents a multiple character column type.
+    /// </summary>
+    TextLarge,
 
     #endregion
 
@@ -33,7 +37,7 @@ public enum ColumnType
     /// <summary>
     /// Represents an integer column type.
     /// </summary>
-    Int,
+    Integer,
     /// <summary>
     /// Represents a long integer column type.
     /// </summary>
@@ -74,18 +78,27 @@ public enum ColumnType
     /// <summary>
     /// Represents a date and time with offset column type.
     /// </summary>
-    DateTimeOffset,
+    DateTimeWithTimezone,
 
     #endregion
+
+    #region Raw types
 
     /// <summary>
     /// Represents a binary data column type.
     /// </summary>
-    ByteArray,
+    Binary,
+    /// <summary>
+    /// Represents a binary data column type.
+    /// </summary>
+    BinaryLarge,
     /// <summary>
     /// Represents a universally unique identifier column type.
     /// </summary>
     Uuid,
+
+    #endregion
+
     /// <summary>
     /// Represents a custom column type.
     /// </summary>
