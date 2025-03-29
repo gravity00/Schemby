@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemby", "src\Schemby\Sche
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemby.Core", "src\Schemby.Core\Schemby.Core.csproj", "{B6B1B3B2-CA93-436D-98B9-1B2FE0E50250}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemby.Oracle", "src\Schemby.Oracle\Schemby.Oracle.csproj", "{9533CF29-973C-4FF3-A721-282FC9F02273}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{B6B1B3B2-CA93-436D-98B9-1B2FE0E50250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6B1B3B2-CA93-436D-98B9-1B2FE0E50250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6B1B3B2-CA93-436D-98B9-1B2FE0E50250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9533CF29-973C-4FF3-A721-282FC9F02273}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9533CF29-973C-4FF3-A721-282FC9F02273}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9533CF29-973C-4FF3-A721-282FC9F02273}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9533CF29-973C-4FF3-A721-282FC9F02273}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{71137A6C-0D59-4D1C-B6E8-A3BA5A0FE0C5} = {941C91B6-68B7-4432-B435-74CEBA2258ED}
 		{B6B1B3B2-CA93-436D-98B9-1B2FE0E50250} = {941C91B6-68B7-4432-B435-74CEBA2258ED}
+		{9533CF29-973C-4FF3-A721-282FC9F02273} = {941C91B6-68B7-4432-B435-74CEBA2258ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0AD8003B-0E87-481F-B7F1-ABB57ED85EB3}

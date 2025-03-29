@@ -4,8 +4,6 @@
 
   <PropertyGroup>
     <Description>Schemby core definitions shared across all implementations</Description>
-    <IsPackable>true</IsPackable>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
