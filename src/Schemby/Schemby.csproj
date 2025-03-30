@@ -3,12 +3,17 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0;net4.8</TargetFrameworks>
+    <Description>Schemby core definitions shared across all implementations</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Schemby.Core\Schemby.Core.csproj" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\IsExternalInit.cs" Link="Properties\IsExternalInit.cs" />
+    <None Include="..\..\README.md;..\..\LICENSE;..\..\logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

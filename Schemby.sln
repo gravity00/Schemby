@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemby", "src\Schemby\Schemby.csproj", "{71137A6C-0D59-4D1C-B6E8-A3BA5A0FE0C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemby.Terminal", "src\Schemby.Terminal\Schemby.Terminal.csproj", "{71137A6C-0D59-4D1C-B6E8-A3BA5A0FE0C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemby.Core", "src\Schemby.Core\Schemby.Core.csproj", "{B6B1B3B2-CA93-436D-98B9-1B2FE0E50250}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemby", "src\Schemby\Schemby.csproj", "{B6B1B3B2-CA93-436D-98B9-1B2FE0E50250}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemby.Oracle", "src\Schemby.Oracle\Schemby.Oracle.csproj", "{9533CF29-973C-4FF3-A721-282FC9F02273}"
 EndProject

@@ -4,16 +4,11 @@
 
   <PropertyGroup>
     <Description>Schemby implementation for Oracle databases</Description>
-    <TargetFrameworks>net8.0;net4.8</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\..\IsExternalInit.cs" Link="Properties\IsExternalInit.cs" />
     <None Include="..\..\README.md;..\..\LICENSE;..\..\logo.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.66" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net4.8'">
@@ -25,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Schemby.Core\Schemby.Core.csproj" />
+    <ProjectReference Include="..\Schemby\Schemby.csproj" />
   </ItemGroup>
 
 </Project>

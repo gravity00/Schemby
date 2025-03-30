@@ -1,11 +1,11 @@
 ﻿using Schemby.Specifications;
 
-namespace Schemby.Inspectors;
+namespace Schemby;
 
 /// <summary>
 /// Interface for database inspectors.
 /// </summary>
-public interface IDatabaseInspector
+public interface IInspector
 {
     /// <summary>
     /// Inspects the database and returns a database specification.
@@ -18,7 +18,7 @@ public interface IDatabaseInspector
     Task<Database> InspectAsync(
         string connectionString,
         string database,
-        DatabaseInspectorOptions? options,
+        InspectOptions? options,
         CancellationToken ct
     );
 }

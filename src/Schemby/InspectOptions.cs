@@ -1,9 +1,9 @@
-﻿namespace Schemby.Inspectors;
+﻿namespace Schemby;
 
 /// <summary>
 /// Database inspector options.
 /// </summary>
-public record struct DatabaseInspectorOptions
+public record struct InspectOptions
 {
     /// <summary>
     /// Optional table filter expression.
