@@ -10,15 +10,15 @@ public interface IDatabaseInspector
     /// <summary>
     /// Inspects the database and returns a database specification.
     /// </summary>
+    /// <param name="connectionString">The database connection string</param>
     /// <param name="database">The database name to inspect</param>
-    /// <param name="tableFilter">An optional table filter</param>
-    /// <param name="columnFilter">An optional column filter</param>
+    /// <param name="options">Optional inspection options</param>
     /// <param name="ct">A token to cancel the operation</param>
     /// <returns>The database specification</returns>
     Task<Database> InspectAsync(
+        string connectionString,
         string database,
-        string? tableFilter,
-        string? columnFilter,
+        DatabaseInspectorOptions? options,
         CancellationToken ct
     );
 }
