@@ -60,64 +60,7 @@ public class OracleInspector(
         {
             var columns = g.Select(c =>
             {
-                var (type, rawType) = TypeMap.GetOrAdd((c.Type, c.Length, c.Precision, c.Scale), p =>
-                {
-                    var (type, length, precision, scale) = p;
-                    return type switch
-                    {
-                        "VARCHAR2" or "NVARCHAR2" or "CHAR" or "NCHAR" => (
-                            length is 1 ? ColumnType.Char : ColumnType.Text,
-                            $"{type}({length})"
-                        ),
-                        "CLOB" or "NCLOB" or "LONG" => (
-                            ColumnType.TextLarge,
-                            type
-                        ),
-
-                        "NUMBER" => (
-                            scale is > 0 ? ColumnType.Decimal :
-                            precision > 9 ? ColumnType.Long :
-                            ColumnType.Integer,
-                            $"NUMBER({precision},{scale})"
-                        ),
-                        "FLOAT" => (
-                            ColumnType.Decimal,
-                            $"FLOAT({precision})"
-                        ),
-                        "BINARY_FLOAT" => (
-                            ColumnType.Float,
-                            "BINARY_FLOAT"
-                        ),
-                        "BINARY_DOUBLE" => (
-                            ColumnType.Double,
-                            "BINARY_DOUBLE"
-                        ),
-
-                        "DATE" => (
-                            ColumnType.DateTime,
-                            "DATE"
-                        ),
-
-                        "RAW" => (
-                            length is 16 ? ColumnType.Uuid : ColumnType.Binary,
-                            $"RAW({length})"
-                        ),
-                        "BLOB" or "LONG RAW" => (
-                            ColumnType.BinaryLarge,
-                            type
-                        ),
-
-                        _ => (
-                            IsTimestamp(type) ? ColumnType.DateTime :
-                            IsTimestampWithTimezone(type) ? ColumnType.DateTimeWithTimezone :
-                            IsIntervalYearToMonth(type) ? ColumnType.TimeInterval :
-                            IsIntervalDayToSecond(type) ? ColumnType.TimeInterval :
-                            ColumnType.Undefined,
-                            type
-                        )
-                    };
-                });
-
+                var (type, rawType) = MapColumnType(c.Type, c.Length, c.Precision, c.Scale);
                 return new Column(
                     c.ColumnName,
                     type,
@@ -228,6 +171,69 @@ ORDER BY
 
         return connection;
     }
+
+    private static (ColumnType Type, string TypeNative) MapColumnType(
+        string columnType,
+        int columnLength,
+        int? columnPrecision,
+        int? columnScale
+    ) => TypeMap.GetOrAdd((columnType, columnLength, columnPrecision, columnScale), x =>
+    {
+        var (type, length, precision, scale) = x;
+        return type switch
+        {
+            "VARCHAR2" or "NVARCHAR2" or "CHAR" or "NCHAR" => (
+                length is 1 ? ColumnType.Char : ColumnType.Text,
+                $"{type}({length})"
+            ),
+            "CLOB" or "NCLOB" or "LONG" => (
+                ColumnType.TextLarge,
+                type
+            ),
+
+            "NUMBER" => (
+                scale is > 0 ? ColumnType.Decimal :
+                precision > 9 ? ColumnType.Long :
+                ColumnType.Integer,
+                $"NUMBER({precision},{scale})"
+            ),
+            "FLOAT" => (
+                ColumnType.Decimal,
+                $"FLOAT({precision})"
+            ),
+            "BINARY_FLOAT" => (
+                ColumnType.Float,
+                "BINARY_FLOAT"
+            ),
+            "BINARY_DOUBLE" => (
+                ColumnType.Double,
+                "BINARY_DOUBLE"
+            ),
+
+            "DATE" => (
+                ColumnType.DateTime,
+                "DATE"
+            ),
+
+            "RAW" => (
+                length is 16 ? ColumnType.Uuid : ColumnType.Binary,
+                $"RAW({length})"
+            ),
+            "BLOB" or "LONG RAW" => (
+                ColumnType.BinaryLarge,
+                type
+            ),
+
+            _ => (
+                IsTimestamp(type) ? ColumnType.DateTime :
+                IsTimestampWithTimezone(type) ? ColumnType.DateTimeWithTimezone :
+                IsIntervalYearToMonth(type) ? ColumnType.TimeInterval :
+                IsIntervalDayToSecond(type) ? ColumnType.TimeInterval :
+                ColumnType.Undefined,
+                type
+            )
+        };
+    });
 
     private static bool IsTimestamp(string type) => Regex.IsMatch(
         type,
