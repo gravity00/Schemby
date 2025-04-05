@@ -11,6 +11,11 @@ public record Table(
 )
 {
     /// <summary>
+    /// Collection of indexes specifications.
+    /// </summary>
+    public IEnumerable<Index> Indexes { get; init; } = [];
+
+    /// <summary>
     /// Table description.
     /// </summary>
     public string? Description { get; init; }

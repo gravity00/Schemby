@@ -17,11 +17,6 @@ public record Column(
 )
 {
     /// <summary>
-    /// Column description.
-    /// </summary>
-    public string? Description { get; init; }
-
-    /// <summary>
     /// The column precision.
     /// </summary>
     public int? Precision { get; init; }
@@ -35,4 +30,9 @@ public record Column(
     /// The column default value.
     /// </summary>
     public string? DefaultValue { get; init; }
+
+    /// <summary>
+    /// Column description.
+    /// </summary>
+    public string? Description { get; init; }
 }
