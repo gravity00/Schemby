@@ -2,23 +2,23 @@
 
 internal record TableColumnViewEntity
 {
-    public string DatabaseName { get; set; } = string.Empty;
+    public string DatabaseName { get; init; } = string.Empty;
 
-    public string TableName { get; set; } = string.Empty;
+    public string TableName { get; init; } = string.Empty;
     
-    public string ColumnName { get; set; } = string.Empty;
+    public string ColumnName { get; init; } = string.Empty;
     
-    public string Type { get; set; } = string.Empty;
+    public string Type { get; init; } = string.Empty;
     
-    public bool Nullable { get; set; }
+    public bool IsNullable { get; init; }
     
-    public int Length { get; set; }
+    public int Length { get; init; }
     
-    public int? Precision { get; set; }
+    public int? Precision { get; init; }
     
-    public int? Scale { get; set; }
+    public int? Scale { get; init; }
     
-    public string? DefaultValue { get; set; }
+    public string? DefaultValue { get; init; }
     
-    public string? Description { get; set; }
+    public string? Description { get; init; }
 }

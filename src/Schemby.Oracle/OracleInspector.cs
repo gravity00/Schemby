@@ -1,11 +1,9 @@
 ﻿using System.Collections.Concurrent;
-using System.Data;
-using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Oracle.ManagedDataAccess.Client;
-using Schemby.Entities;
 using Schemby.Specifications;
+using Index = Schemby.Specifications.Index;
 
 namespace Schemby;
 
@@ -40,21 +38,35 @@ public class OracleInspector(
         if (connectionString is null) throw new ArgumentNullException(nameof(connectionString));
         if (database is null) throw new ArgumentNullException(nameof(database));
 
+        database = database.ToUpperInvariant();
         using var _ = logger.BeginScope("Database:'{Database}'", database);
 
-        logger.LogDebug("Connecting to database");
+        logger.LogDebug("Connecting to database [{DatabaseInspectorOptions}]", options);
 #if !NET48
         await
 #endif
             using var db = await ConnectAsync(connectionString, ct);
 
-        logger.LogDebug("Inspecting database columns [{DatabaseInspectorOptions}]", options);
-        var dbColumns = await GetColumnsAsync(
+        var tableFilter = options?.TableFilter;
+        var columnFilter = options?.ColumnFilter;
+
+        logger.LogDebug("Inspecting database columns");
+        var dbColumns = await sqlRunner.GetColumnsAsync(
             db,
             database,
-            options ?? default,
+            tableFilter,
+            columnFilter,
             ct
         );
+
+        logger.LogDebug("Inspecting database indexes");
+        var dbIndexes = (await sqlRunner.GetIndexesAsync(
+            db,
+            database,
+            tableFilter,
+            columnFilter,
+            ct
+        )).GroupBy(e => e.TableName).ToDictionary(e => e.Key);
 
         var tables = dbColumns.GroupBy(c => c.TableName).Select(g =>
         {
@@ -65,7 +77,7 @@ public class OracleInspector(
                     c.ColumnName,
                     type,
                     rawType,
-                    c.Nullable,
+                    c.IsNullable,
                     c.Length
                 )
                 {
@@ -76,76 +88,38 @@ public class OracleInspector(
                 };
             }).ToArray();
 
+            Index[] indexes;
+            if (dbIndexes.TryGetValue(g.Key, out var dbTableIndexes))
+            {
+                indexes = dbTableIndexes.GroupBy(i => i.IndexName).Select(ig =>
+                {
+                    var dbIndex = ig.First();
+                    return new Index(
+                        dbIndex.IndexName,
+                        dbIndex.IsUnique,
+                        ig.Select(i => new IndexColumn(
+                            i.ColumnName,
+                            i.IsAscending
+                        )).ToArray()
+                    );
+                }).ToArray();
+            }
+            else
+                indexes = [];
+
             return new Table(
                 g.Key,
                 columns
-            );
+            )
+            {
+                Indexes = indexes
+            };
         }).ToArray();
 
         return new Database(
             new Metadata(1, DateTimeOffset.UtcNow),
             database,
             tables
-        );
-    }
-
-    private async Task<IEnumerable<TableColumnViewEntity>> GetColumnsAsync(
-        IDbConnection connection,
-        string database,
-        InspectOptions options,
-        CancellationToken ct
-    )
-    {
-        var sqlBuilder = new StringBuilder(@"
-SELECT 
-    T.OWNER DatabaseName,
-    T.TABLE_NAME TableName,
-    C.COLUMN_NAME ColumnName,
-    C.DATA_TYPE Type,
-    DECODE(C.NULLABLE, 
-        'Y', 1, 
-        'N', 0
-    ) Nullable,
-    C.DATA_LENGTH Length,
-    C.DATA_PRECISION Precision,
-    C.DATA_SCALE Scale,
-    C.DATA_DEFAULT DefaultValue,
-    CM.COMMENTS Description
-FROM ALL_TABLES T
-INNER JOIN ALL_TAB_COLUMNS C
-    ON T.TABLE_NAME = C.TABLE_NAME AND T.OWNER = C.OWNER
-LEFT JOIN ALL_COL_COMMENTS CM 
-    ON C.OWNER = CM.OWNER AND C.TABLE_NAME = CM.TABLE_NAME AND C.COLUMN_NAME = CM.COLUMN_NAME
-WHERE
-    T.OWNER = :Database");
-
-        if (!string.IsNullOrWhiteSpace(options.TableFilter))
-            sqlBuilder.Append(@"
-    AND T.TABLE_NAME LIKE :TableFilter");
-
-        if (!string.IsNullOrWhiteSpace(options.ColumnFilter))
-            sqlBuilder.Append(@"
-    AND C.COLUMN_NAME LIKE :ColumnFilter");
-
-        sqlBuilder.Append(@"
-ORDER BY
-    T.OWNER,
-    T.TABLE_NAME,
-    C.COLUMN_ID");
-
-        return await sqlRunner.QueryAsync<TableColumnViewEntity>(
-            connection,
-            sqlBuilder.ToString(),
-            new SqlOptions
-            {
-                Parameters = new
-                {
-                    Database = database.ToUpperInvariant(),
-                    options.TableFilter,
-                    options.ColumnFilter
-                }
-            },
-            ct
         );
     }
 
