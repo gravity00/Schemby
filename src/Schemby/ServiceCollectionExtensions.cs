@@ -12,14 +12,25 @@ public static class ServiceCollectionExtensions
     /// Adds Schemby services to the specified <see cref="IServiceCollection"/>.
     /// </summary>
     /// <param name="services">The service collection</param>
+    /// <param name="providerMapper">Callback to configure database providers</param>
     /// <returns>A reference to this instance after the operation has completed</returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public static IServiceCollection AddSchemby(this IServiceCollection services)
+    public static IServiceCollection AddSchemby(
+        this IServiceCollection services,
+        Action<IDictionary<string, IProviderInstaller>> providerMapper
+    )
     {
         if (services == null) throw new ArgumentNullException(nameof(services));
+        if (providerMapper == null) throw new ArgumentNullException(nameof(providerMapper));
 
         services.AddSingleton<ISqlRunner, SqlRunner>();
         services.AddSingleton<IInspectorFactory, InspectorFactory>();
+
+        var providerMap = new Dictionary<string, IProviderInstaller>();
+        providerMapper(providerMap);
+
+        foreach (var (name, installer) in providerMap.Select(e => (e.Key.ToLowerInvariant(), e.Value)))
+            installer.Install(services, name);
 
         return services;
     }
