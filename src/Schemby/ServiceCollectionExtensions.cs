@@ -26,7 +26,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ISqlRunner, SqlRunner>();
         services.AddSingleton<IInspectorFactory, InspectorFactory>();
 
-        var providerMap = new Dictionary<string, IProviderInstaller>();
+        var providerMap = new Dictionary<string, IProviderInstaller>(
+            StringComparer.OrdinalIgnoreCase
+        );
         providerMapper(providerMap);
 
         foreach (var (name, installer) in providerMap.Select(e => (e.Key.ToLowerInvariant(), e.Value)))
