@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Schemby;
 
 var cts = new CancellationTokenSource();
@@ -29,26 +28,4 @@ static void ConfigureServices(
     services.AddSingleton<IInspectorFactory, InspectorFactory>();
     services.AddKeyedSingleton<IInspector, OracleInspector>("oracle");
 
-}
-
-namespace Schemby
-{
-    public class InspectorFactory(
-        ILogger<InspectorFactory> logger,
-        IServiceProvider serviceProvider
-    ) : IInspectorFactory
-    {
-        public IInspector Create(
-            string provider
-        )
-        {
-            if (provider is null) throw new ArgumentNullException(nameof(provider));
-
-            provider = provider.ToLowerInvariant();
-
-            logger.LogDebug("Creating database inspector for '{Provider}'", provider);
-
-            return serviceProvider.GetRequiredKeyedService<IInspector>(provider);
-        }
-    }
 }

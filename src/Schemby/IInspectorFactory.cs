@@ -10,7 +10,5 @@ public interface IInspectorFactory
     /// </summary>
     /// <param name="provider">The provider selector alias</param>
     /// <returns>The database inspector</returns>
-    IInspector Create(
-        string provider
-    );
+    IInspector Create(string provider);
 }
