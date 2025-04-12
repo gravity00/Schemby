@@ -59,6 +59,14 @@ public class OracleInspector(
             ct
         );
 
+        logger.LogDebug("Inspect database primary keys");
+        var dbPrimaryKeys = (await sqlRunner.GetPrimaryKeysAsync(
+            db,
+            database,
+            tableFilter,
+            ct
+        )).GroupBy(e => e.TableName).ToDictionary(e => e.Key);
+
         logger.LogDebug("Inspecting database indexes");
         var dbIndexes = (await sqlRunner.GetIndexesAsync(
             db,
@@ -70,6 +78,19 @@ public class OracleInspector(
 
         var tables = dbColumns.GroupBy(c => c.TableName).Select(g =>
         {
+
+            PrimaryKey? primaryKey;
+            if (dbPrimaryKeys.TryGetValue(g.Key, out var dbTablePrimaryKeys))
+            {
+                var dbTablePrimaryKey = dbTablePrimaryKeys.First();
+                primaryKey = new PrimaryKey(
+                    dbTablePrimaryKey.ConstraintName,
+                    dbTablePrimaryKeys.Select(i => i.ColumnName).ToArray()
+                );
+            }
+            else
+                primaryKey = null;
+
             var columns = g.Select(c =>
             {
                 var (type, rawType) = MapColumnType(c.Type, c.Length, c.Precision, c.Scale);
@@ -112,6 +133,7 @@ public class OracleInspector(
                 columns
             )
             {
+                PrimaryKey = primaryKey,
                 Indexes = indexes
             };
         }).ToArray();

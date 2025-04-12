@@ -11,6 +11,11 @@ public record Table(
 )
 {
     /// <summary>
+    /// Table primary key specification.
+    /// </summary>
+    public PrimaryKey? PrimaryKey { get; init; }
+
+    /// <summary>
     /// Collection of indexes specifications.
     /// </summary>
     public IEnumerable<Index> Indexes { get; init; } = [];
