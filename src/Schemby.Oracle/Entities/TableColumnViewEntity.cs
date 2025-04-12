@@ -2,12 +2,10 @@
 
 internal record TableColumnViewEntity
 {
-    public string DatabaseName { get; init; } = string.Empty;
-
     public string TableName { get; init; } = string.Empty;
     
     public string ColumnName { get; init; } = string.Empty;
-    
+
     public string Type { get; init; } = string.Empty;
     
     public bool IsNullable { get; init; }

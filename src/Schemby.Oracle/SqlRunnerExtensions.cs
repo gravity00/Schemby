@@ -18,7 +18,6 @@ internal static class SqlRunnerExtensions
     {
         var sqlBuilder = new StringBuilder(@"
 SELECT 
-    T.OWNER DatabaseName,
     T.TABLE_NAME TableName,
     C.COLUMN_NAME ColumnName,
     C.DATA_TYPE Type,
@@ -80,7 +79,6 @@ ORDER BY
     {
         var sqlBuilder = new StringBuilder(@"
 SELECT 
-    I.OWNER DatabaseName,
     I.TABLE_NAME TableName,
     I.INDEX_NAME IndexName,
     IC.COLUMN_NAME ColumnName,

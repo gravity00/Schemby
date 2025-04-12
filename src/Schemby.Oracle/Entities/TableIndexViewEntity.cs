@@ -2,8 +2,6 @@
 
 internal record TableIndexViewEntity
 {
-    public string DatabaseName { get; init; } = string.Empty;
-
     public string TableName { get; init; } = string.Empty;
 
     public string IndexName { get; init; } = string.Empty;
