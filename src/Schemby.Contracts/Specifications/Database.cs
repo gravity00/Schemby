@@ -9,5 +9,5 @@
 public record Database(
     Metadata Metadata,
     string Name,
-    IEnumerable<Table> Tables
+    IReadOnlyCollection<Table> Tables
 );

@@ -7,7 +7,7 @@
 /// <param name="Columns">Collection of column specifications</param>
 public record Table(
     string Name,
-    IEnumerable<Column> Columns
+    IReadOnlyCollection<Column> Columns
 )
 {
     /// <summary>
@@ -18,7 +18,7 @@ public record Table(
     /// <summary>
     /// Collection of indexes specifications.
     /// </summary>
-    public IEnumerable<Index> Indexes { get; init; } = [];
+    public IReadOnlyCollection<Index> Indexes { get; init; } = [];
 
     /// <summary>
     /// Table description.

@@ -7,5 +7,5 @@
 /// <param name="Columns">Collection of column names</param>
 public record PrimaryKey(
     string Name,
-    IEnumerable<string> Columns
+    IReadOnlyCollection<string> Columns
 );

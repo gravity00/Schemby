@@ -9,5 +9,5 @@
 public record Index(
     string Name,
     bool Unique,
-    IEnumerable<IndexColumn> Columns
+    IReadOnlyCollection<IndexColumn> Columns
 );
