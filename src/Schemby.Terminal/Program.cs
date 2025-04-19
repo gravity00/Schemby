@@ -24,8 +24,8 @@ static void ConfigureServices(
     IServiceCollection services
 )
 {
-    services.AddSingleton<ISqlRunner, SqlRunner>();
-    services.AddSingleton<IInspectorFactory, InspectorFactory>();
-    services.AddKeyedSingleton<IInspector, OracleInspector>("oracle");
-
+    services.AddSchemby(providers =>
+    {
+        providers["oracle"] = new OracleProviderInstaller();
+    });
 }
