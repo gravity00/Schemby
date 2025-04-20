@@ -16,6 +16,11 @@ public record Table(
     public PrimaryKey? PrimaryKey { get; init; }
 
     /// <summary>
+    /// Collection of foreign keys specifications.
+    /// </summary>
+    public IReadOnlyCollection<ForeignKey> ForeignKeys { get; init; } = [];
+
+    /// <summary>
     /// Collection of indexes specifications.
     /// </summary>
     public IReadOnlyCollection<Index> Indexes { get; init; } = [];
