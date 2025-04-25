@@ -71,7 +71,7 @@ ORDER BY
         );
     }
 
-    public static async Task<IEnumerable<TablePrimaryKeyViewEntity>> GetPrimaryKeysAsync(
+    public static async Task<IEnumerable<TableConstraintViewEntity>> GetConstraintsAsync(
         this ISqlRunner sqlRunner,
         IDbConnection connection,
         string database,
@@ -81,18 +81,24 @@ ORDER BY
     {
         var sqlBuilder = new StringBuilder(@"
 SELECT
+    C.CONSTRAINT_NAME Name,
+    ASCII(C.CONSTRAINT_TYPE) Type,
     C.TABLE_NAME TableName,
-    C.CONSTRAINT_NAME ConstraintName,
-    CC.COLUMN_NAME ColumnName
+    CC.COLUMN_NAME ColumnName,
+    C.R_CONSTRAINT_NAME ConstraintNameFk
 FROM ALL_CONSTRAINTS C
 INNER JOIN ALL_CONS_COLUMNS CC
     ON C.OWNER = CC.OWNER
         AND C.TABLE_NAME = CC.TABLE_NAME
         AND C.CONSTRAINT_NAME = CC.CONSTRAINT_NAME
 WHERE
-    C.CONSTRAINT_TYPE = 'P'
+    C.CONSTRAINT_TYPE IN ('P', 'R')
     AND C.STATUS = 'ENABLED'
-    AND C.OWNER = :Database");
+    AND C.OWNER = :Database
+    AND (
+        C.R_OWNER IS NULL
+        OR C.R_OWNER = :Database
+    )");
 
         if (!string.IsNullOrWhiteSpace(tableFilter))
             sqlBuilder.Append(@"
@@ -105,7 +111,7 @@ ORDER BY
     C.CONSTRAINT_NAME,
     CC.POSITION");
 
-        return await sqlRunner.QueryAsync<TablePrimaryKeyViewEntity>(
+        return await sqlRunner.QueryAsync<TableConstraintViewEntity>(
             connection,
             sqlBuilder.ToString(),
             new SqlOptions

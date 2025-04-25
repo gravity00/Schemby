@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Oracle.ManagedDataAccess.Client;
+using Schemby.Entities;
 using Schemby.Specifications;
 using Index = Schemby.Specifications.Index;
 
@@ -59,13 +60,21 @@ public class OracleInspector(
             ct
         );
 
-        logger.LogDebug("Inspect database primary keys");
-        var dbPrimaryKeys = (await sqlRunner.GetPrimaryKeysAsync(
+        logger.LogDebug("Inspect database constraints");
+        var dbConstraints = (await sqlRunner.GetConstraintsAsync(
             db,
             database,
             tableFilter,
             ct
-        )).GroupBy(e => e.TableName).ToDictionary(e => e.Key);
+        )).ToArray();
+        var dbPrimaryKeys = dbConstraints.Where(
+            e => e.Type is TableConstraintTypeEntity.PrimaryKey
+        ).GroupBy(e => e.TableName).ToDictionary(e => e.Key);
+        var dbForeignKeys = dbConstraints.Where(e => e is
+        {
+            Type: TableConstraintTypeEntity.ForeignKey,
+            ConstraintNameFk: not null
+        }).GroupBy(e => e.TableName).ToDictionary(e => e.Key);
 
         logger.LogDebug("Inspecting database indexes");
         var dbIndexes = (await sqlRunner.GetIndexesAsync(
@@ -78,19 +87,6 @@ public class OracleInspector(
 
         var tables = dbColumns.GroupBy(c => c.TableName).Select(g =>
         {
-
-            PrimaryKey? primaryKey;
-            if (dbPrimaryKeys.TryGetValue(g.Key, out var dbTablePrimaryKeys))
-            {
-                var dbTablePrimaryKey = dbTablePrimaryKeys.First();
-                primaryKey = new PrimaryKey(
-                    dbTablePrimaryKey.ConstraintName,
-                    dbTablePrimaryKeys.Select(i => i.ColumnName).ToArray()
-                );
-            }
-            else
-                primaryKey = null;
-
             var columns = g.Select(c =>
             {
                 var (type, rawType) = MapColumnType(c.Type, c.Length, c.Precision, c.Scale);
@@ -108,6 +104,50 @@ public class OracleInspector(
                     DefaultValue = c.DefaultValue
                 };
             }).ToArray();
+
+            PrimaryKey? primaryKey;
+            if (dbPrimaryKeys.TryGetValue(g.Key, out var dbTablePrimaryKeys))
+            {
+                var dbTablePrimaryKey = dbTablePrimaryKeys.First();
+                primaryKey = new PrimaryKey(
+                    dbTablePrimaryKey.Name,
+                    dbTablePrimaryKeys.Select(i => i.ColumnName).ToArray()
+                );
+            }
+            else
+                primaryKey = null;
+
+            ForeignKey[] foreignKeys;
+            if (dbForeignKeys.TryGetValue(g.Key, out var dbTableForeignKeys))
+            {
+                foreignKeys = dbTableForeignKeys.GroupBy(fk => fk.Name).Select(fkg =>
+                {
+                    var dbTableForeignKey = fkg.First();
+                    var primaryKeyName = dbTableForeignKey.ConstraintNameFk ?? string.Empty;
+                    var pks = dbPrimaryKeys.Values.FirstOrDefault(
+                        pk => pk.Any(e => e.Name == primaryKeyName)
+                    )?.ToArray() ?? [];
+                    if (pks.Length == 0)
+                    {
+                        throw new InvalidOperationException(
+                            $"Foreign key '{dbTableForeignKey.Name}' references a non-existing primary key '{primaryKeyName}'"
+                        );
+                    }
+
+                    var dbTablePrimaryKey = pks[0];
+                    return new ForeignKey(
+                        dbTableForeignKey.Name,
+                        dbTablePrimaryKey.TableName,
+                        fkg.Select(fk => fk.ColumnName).Zip(pks.Select(pk => pk.ColumnName), (o, t) => new
+                        {
+                            Origin = o,
+                            Target = t
+                        }).ToDictionary(e => e.Origin, e => e.Target)
+                    );
+                }).ToArray();
+            }
+            else
+                foreignKeys = [];
 
             Index[] indexes;
             if (dbIndexes.TryGetValue(g.Key, out var dbTableIndexes))
@@ -134,6 +174,7 @@ public class OracleInspector(
             )
             {
                 PrimaryKey = primaryKey,
+                ForeignKeys = foreignKeys,
                 Indexes = indexes
             };
         }).ToArray();
