@@ -56,6 +56,7 @@ static void ConfigureServices(
             o.LogCommandResult = true;
         });
         options.AddHandlersFromAssemblyOf<Program>();
+        options.AddValidatorsFromAssemblyOf<Program>();
     });
 }
 

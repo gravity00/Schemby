@@ -1,6 +1,4 @@
-﻿using Schemby.Commands;
-
-namespace Schemby.Handlers;
+﻿namespace Schemby.Commands.Handlers;
 
 public class InspectCommandHandler(
     ILogger<InspectCommandHandler> logger,
