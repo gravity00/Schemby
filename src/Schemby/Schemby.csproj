@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <Description>Schemby core definitions shared across all implementations</Description>
+    <AssemblyName>Schemby.Core</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
