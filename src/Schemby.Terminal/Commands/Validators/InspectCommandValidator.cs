@@ -12,7 +12,12 @@ public class InspectCommandValidator : CommandValidator<InspectCommand>
             .NotEmpty();
         RuleFor(x => x.Database)
             .NotEmpty();
+        RuleFor(x => x.Output)
+            .NotEmpty();
         RuleFor(x => x.TableFilter);
         RuleFor(x => x.ColumnFilter);
+        RuleFor(x => x.Format)
+            .NotEmpty()
+            .IsInEnum();
     }
 }

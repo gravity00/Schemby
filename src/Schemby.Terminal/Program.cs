@@ -71,8 +71,10 @@ static int RunInspectVerb(ILogger<Program> logger, IMediator mediator, InspectVe
         ConnectionString = verb.ConnectionString,
         Provider = verb.Provider,
         Database = verb.Database,
+        Output = verb.Output,
         TableFilter = verb.TableFilter,
         ColumnFilter = verb.ColumnFilter,
+        Format = (InspectOutputFormat)verb.Format,
 
         Verbose = verb.Verbose,
     }, ct);

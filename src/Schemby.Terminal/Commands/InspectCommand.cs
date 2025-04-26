@@ -8,7 +8,11 @@ public record InspectCommand : Command
 
     public string Database { get; init; } = string.Empty;
 
+    public string Output { get; init; } = string.Empty;
+
     public string? TableFilter { get; init; }
 
     public string? ColumnFilter { get; init; }
+
+    public InspectOutputFormat Format { get; init; }
 }
