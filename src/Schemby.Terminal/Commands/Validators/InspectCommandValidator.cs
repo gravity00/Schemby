@@ -2,7 +2,7 @@
 
 namespace Schemby.Commands.Validators;
 
-public class InspectCommandValidator : AbstractValidator<InspectCommand>
+public class InspectCommandValidator : CommandValidator<InspectCommand>
 {
     public InspectCommandValidator()
     {
@@ -14,6 +14,5 @@ public class InspectCommandValidator : AbstractValidator<InspectCommand>
             .NotEmpty();
         RuleFor(x => x.TableFilter);
         RuleFor(x => x.ColumnFilter);
-        RuleFor(x => x.Verbose);
     }
 }
