@@ -55,6 +55,10 @@ static void ConfigureServices(
             o.Level = LogLevel.Debug;
             o.LogCommandResult = true;
         });
+        options.AddPipelineForValidation(o =>
+        {
+            o.ValidateCommand = true;
+        });
         options.AddHandlersFromAssemblyOf<Program>();
         options.AddValidatorsFromAssemblyOf<Program>();
     });
