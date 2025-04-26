@@ -7,14 +7,25 @@
     <TargetFrameworks>net8.0;net4.8</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AssemblyName>schemby</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="*.config;*.json" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <Compile Include="..\..\IsExternalInit.cs" Link="Properties\IsExternalInit.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="Microsoft.Extensions.Logging" />
+    <Using Include="Microsoft.Extensions.Options" />
+    <Using Include="SimpleSoft.Mediator" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="SimpleSoft.Mediator.Microsoft.Extensions.LoggingPipeline" Version="2.2.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>

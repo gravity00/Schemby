@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Schemby.Terminal": {
+      "commandName": "Project",
+      "commandLineArgs": "help"
+    }
+  }
+}
