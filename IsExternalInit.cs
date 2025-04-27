@@ -1,4 +1,4 @@
-﻿#if !NET50_OR_GREATER
+﻿#if !NET80
 // ReSharper disable once CheckNamespace
 namespace System.Runtime.CompilerServices;
 
