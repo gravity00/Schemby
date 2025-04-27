@@ -19,5 +19,7 @@ public class InspectCommandValidator : CommandValidator<InspectCommand>
         RuleFor(x => x.Format)
             .NotEmpty()
             .IsInEnum();
+        RuleFor(x => x.Author);
+        RuleFor(x => x.Description);
     }
 }

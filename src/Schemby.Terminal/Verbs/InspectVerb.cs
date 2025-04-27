@@ -27,15 +27,34 @@ public record InspectVerb : Verb
     [Option('f', "format", Default = InspectVerbOutputFormat.Yaml, HelpText = "The output format (yaml, json, xml).")]
     public InspectVerbOutputFormat Format { get; init; }
 
+    [Option("author", HelpText = "The author of the specification.")]
+    public string? Author { get; init; }
+
+    [Option("description", HelpText = "The description of the specification.")]
+    public string? Description { get; init; }
+
     [Usage(ApplicationAlias = "schemby")]
     public static IEnumerable<Example> Examples { get; } =
     [
-        new Example("Output definition to a YAML file", new InspectVerb
+        new Example("Simple inspection output to a YAML file", new InspectVerb
         {
             ConnectionString = "DATA SOURCE=localhost;USER ID=the_user;PASSWORD=the_password;",
             Provider = "oracle",
             Database = "the_database",
             Output = "database.yaml",
+        }),
+        new Example("Fully configured inspection output to a JSON file", new InspectVerb
+        {
+            ConnectionString = "Server=localhost;User Id=the_user;Password=the_password;",
+            Provider = "sqlServer",
+            Database = "the_database",
+            Output = "database.yaml",
+            TableFilter = "dbo%",
+            ColumnFilter = "dbo%.%",
+            Format = InspectVerbOutputFormat.Json,
+            Author = "John Doe",
+            Description = "Specification for John Doe database.",
+            Verbose = true
         })
     ];
 }

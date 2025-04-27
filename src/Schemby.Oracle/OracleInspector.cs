@@ -180,7 +180,6 @@ public class OracleInspector(
         }).ToArray();
 
         return new Database(
-            new Metadata(1, DateTimeOffset.UtcNow),
             database,
             tables
         );

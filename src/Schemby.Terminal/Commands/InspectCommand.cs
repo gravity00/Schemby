@@ -15,4 +15,8 @@ public record InspectCommand : Command
     public string? ColumnFilter { get; init; }
 
     public InspectOutputFormat Format { get; init; }
+
+    public string? Author { get; init; }
+
+    public string? Description { get; init; }
 }

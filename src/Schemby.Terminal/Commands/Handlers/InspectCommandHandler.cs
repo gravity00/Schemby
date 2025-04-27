@@ -1,4 +1,6 @@
-﻿namespace Schemby.Commands.Handlers;
+﻿using Schemby.Specifications;
+
+namespace Schemby.Commands.Handlers;
 
 public class InspectCommandHandler(
     ILogger<InspectCommandHandler> logger,
@@ -14,5 +16,15 @@ public class InspectCommandHandler(
             TableFilter = cmd.TableFilter,
             ColumnFilter = cmd.ColumnFilter,
         }, ct);
+
+        var specification = new Specification(
+            1,
+            cmd.CreatedOn,
+            database
+        )
+        {
+            Author = cmd.Author,
+            Description = cmd.Description,
+        };
     }
 }

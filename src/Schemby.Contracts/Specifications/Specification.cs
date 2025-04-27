@@ -1,13 +1,15 @@
 ﻿namespace Schemby.Specifications;
 
 /// <summary>
-/// Represents a collection of database specifications.
+/// Aggregates a database specification.
 /// </summary>
 /// <param name="Version">The specification version</param>
 /// <param name="CreatedAt">The date and time when the specification was created</param>
-public record Metadata(
+/// <param name="Database">The database specification was created</param>
+public record Specification(
     int Version,
-    DateTimeOffset CreatedAt
+    DateTimeOffset CreatedAt,
+    Database Database
 )
 {
     /// <summary>
