@@ -4,7 +4,8 @@ namespace Schemby.Commands.Handlers;
 
 public class InspectCommandHandler(
     ILogger<InspectCommandHandler> logger,
-    IInspectorFactory inspectorFactory
+    IInspectorFactory inspectorFactory,
+    ISerializerFactory serializerFactory
 ) : ICommandHandler<InspectCommand>
 {
     public async Task HandleAsync(InspectCommand cmd, CancellationToken ct)
@@ -19,12 +20,36 @@ public class InspectCommandHandler(
 
         var specification = new Specification(
             1,
-            cmd.CreatedOn,
+            DateTimeOffset.UtcNow,
             database
         )
         {
             Author = cmd.Author,
             Description = cmd.Description,
         };
+
+        using var outputStream = CreateOutputFile(cmd.Output);
+
+        var serializer = serializerFactory.Create(cmd.Format.ToString("G"));
+    }
+
+    private static Stream CreateOutputFile(string outputPath)
+    {
+        var filePath = PathEx.GetFullPath(Directory.GetCurrentDirectory(), outputPath);
+        
+        var fileInfo = new FileInfo(filePath);
+        if (fileInfo.Exists)
+            fileInfo.Delete();
+        else
+            fileInfo.Directory?.Create();
+
+        return new FileStream(
+            fileInfo.FullName,
+            FileMode.CreateNew,
+            FileAccess.Write,
+            FileShare.None,
+            1024,
+            FileOptions.Asynchronous
+        );
     }
 }
