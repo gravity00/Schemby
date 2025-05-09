@@ -20,8 +20,8 @@ public static class ServiceCollectionExtensions
         Action<IDictionary<string, IProviderInstaller>> providerMapper
     )
     {
-        if (services == null) throw new ArgumentNullException(nameof(services));
-        if (providerMapper == null) throw new ArgumentNullException(nameof(providerMapper));
+        if (services is null) throw new ArgumentNullException(nameof(services));
+        if (providerMapper is null) throw new ArgumentNullException(nameof(providerMapper));
 
         services.AddSingleton<ISqlRunner, SqlRunner>();
         services.AddSingleton<IInspectorFactory, InspectorFactory>();
@@ -33,6 +33,8 @@ public static class ServiceCollectionExtensions
 
         foreach (var (name, installer) in providerMap.Select(e => (e.Key.ToLowerInvariant(), e.Value)))
             installer.Install(services, name);
+
+        services.AddSingleton<ISerializerFactory, SerializerFactory>();
 
         return services;
     }
