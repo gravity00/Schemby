@@ -23,7 +23,12 @@ using var host = builder.Build();
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 var mediator = host.Services.GetRequiredService<IMediator>();
 
-return Parser.Default.ParseArguments<
+var parser = new Parser(settings =>
+{
+    settings.CaseInsensitiveEnumValues = true;
+    settings.HelpWriter = Console.Error;
+});
+return parser.ParseArguments<
     InspectVerb,
     object
 >(args).MapResult(
