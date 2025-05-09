@@ -22,12 +22,8 @@ ConfigureServices(
 using var host = builder.Build();
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 var mediator = host.Services.GetRequiredService<IMediator>();
+var parser = host.Services.GetRequiredService<Parser>();
 
-var parser = new Parser(settings =>
-{
-    settings.CaseInsensitiveEnumValues = true;
-    settings.HelpWriter = Console.Error;
-});
 return parser.ParseArguments<
     InspectVerb,
     object
@@ -67,6 +63,11 @@ static void ConfigureServices(
         options.AddHandlersFromAssemblyOf<Program>();
         options.AddValidatorsFromAssemblyOf<Program>();
     });
+    services.AddSingleton(_ => new Parser(settings =>
+    {
+        settings.CaseInsensitiveEnumValues = true;
+        settings.HelpWriter = Console.Error;
+    }));
 }
 
 static int RunInspectVerb(ILogger<Program> logger, IMediator mediator, InspectVerb verb, CancellationToken ct)
