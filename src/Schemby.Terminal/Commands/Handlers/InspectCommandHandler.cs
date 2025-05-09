@@ -28,14 +28,19 @@ public class InspectCommandHandler(
             Description = cmd.Description,
         };
 
-        using var outputStream = CreateOutputFile(cmd.Output);
+#if !NET48
+        await
+#endif
+            using var outputStream = CreateOutputFile(cmd.Output);
 
         var serializer = serializerFactory.Create(cmd.Format.ToString("G"));
+
+        await serializer.SerializeToStreamAsync(specification, outputStream, ct);
     }
 
     private static Stream CreateOutputFile(string outputPath)
     {
-        var filePath = PathEx.GetFullPath(Directory.GetCurrentDirectory(), outputPath);
+        var filePath = PathEx.GetFullPath(outputPath, Directory.GetCurrentDirectory());
         
         var fileInfo = new FileInfo(filePath);
         if (fileInfo.Exists)

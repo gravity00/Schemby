@@ -1,4 +1,5 @@
 ﻿using Schemby;
+using Schemby.Serializers;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,7 @@ public static class ServiceCollectionExtensions
             installer.Install(services, name);
 
         services.AddSingleton<ISerializerFactory, SerializerFactory>();
+        services.AddKeyedSingleton<ISerializer, YamlSerializer>("yaml");
 
         return services;
     }
