@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <RootNamespace>Schemby.Serializers</RootNamespace>
+    <Description>Schemby serializer implementation for YAML files</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\IsExternalInit.cs" Link="Properties\IsExternalInit.cs" />
+    <None Include="..\..\README.md;..\..\LICENSE;..\..\logo.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" Version="16.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Schemby\Schemby.csproj" />
+  </ItemGroup>
+
+</Project>

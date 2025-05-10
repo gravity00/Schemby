@@ -1,5 +1,4 @@
 ﻿using Schemby;
-using Schemby.Serializers;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
@@ -13,30 +12,42 @@ public static class ServiceCollectionExtensions
     /// Adds Schemby services to the specified <see cref="IServiceCollection"/>.
     /// </summary>
     /// <param name="services">The service collection</param>
-    /// <param name="providerMapper">Callback to configure database providers</param>
+    /// <param name="options">Schemby configuration options</param>
     /// <returns>A reference to this instance after the operation has completed</returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IServiceCollection AddSchemby(
         this IServiceCollection services,
-        Action<IDictionary<string, IProviderInstaller>> providerMapper
+        SchembyOptions options
     )
     {
         if (services is null) throw new ArgumentNullException(nameof(services));
-        if (providerMapper is null) throw new ArgumentNullException(nameof(providerMapper));
+        if (options is null) throw new ArgumentNullException(nameof(options));
+
+        if (options.ProviderMapper is not null)
+        {
+            var providerMap = new Dictionary<string, IProviderInstaller>(
+                StringComparer.OrdinalIgnoreCase
+            );
+            options.ProviderMapper(providerMap);
+
+            foreach (var (name, installer) in providerMap.Select(e => (e.Key.ToLowerInvariant(), e.Value)))
+                installer.Install(services, name);
+        }
+
+        if (options.SerializerMapper is not null)
+        {
+            var providerMap = new Dictionary<string, ISerializerInstaller>(
+                StringComparer.OrdinalIgnoreCase
+            );
+            options.SerializerMapper(providerMap);
+
+            foreach (var (name, installer) in providerMap.Select(e => (e.Key.ToLowerInvariant(), e.Value)))
+                installer.Install(services, name);
+        }
 
         services.AddSingleton<ISqlRunner, SqlRunner>();
         services.AddSingleton<IInspectorFactory, InspectorFactory>();
-
-        var providerMap = new Dictionary<string, IProviderInstaller>(
-            StringComparer.OrdinalIgnoreCase
-        );
-        providerMapper(providerMap);
-
-        foreach (var (name, installer) in providerMap.Select(e => (e.Key.ToLowerInvariant(), e.Value)))
-            installer.Install(services, name);
-
         services.AddSingleton<ISerializerFactory, SerializerFactory>();
-        services.AddKeyedSingleton<ISerializer, YamlSerializer>("yaml");
 
         return services;
     }

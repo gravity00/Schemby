@@ -1,8 +1,10 @@
 ﻿using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Schemby;
 using Schemby.Commands;
 using Schemby.Providers;
+using Schemby.Serializers;
 using Schemby.Verbs;
 
 var cts = new CancellationTokenSource();
@@ -45,9 +47,16 @@ static void ConfigureServices(
     IServiceCollection services
 )
 {
-    services.AddSchemby(providers =>
+    services.AddSchemby(new SchembyOptions
     {
-        providers["oracle"] = new OracleProviderInstaller();
+        ProviderMapper = providers =>
+        {
+            providers["oracle"] = new OracleProviderInstaller();
+        },
+        SerializerMapper = serializers =>
+        {
+            serializers["yaml"] = new YamlSerializerInstaller();
+        },
     });
     services.AddMediator(options =>
     {
