@@ -1,8 +1,8 @@
 ﻿using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Schemby;
 using Schemby.Commands;
+using Schemby.Providers;
 using Schemby.Verbs;
 
 var cts = new CancellationTokenSource();

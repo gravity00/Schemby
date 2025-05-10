@@ -1,9 +1,10 @@
 ﻿using System.Data;
 using System.Text;
-using Schemby.Entities;
+using Schemby.Providers.Entities;
+
 // ReSharper disable UseRawString
 
-namespace Schemby;
+namespace Schemby.Providers;
 
 internal static class SqlRunnerExtensions
 {

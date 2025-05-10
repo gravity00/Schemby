@@ -2,11 +2,11 @@
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Oracle.ManagedDataAccess.Client;
-using Schemby.Entities;
+using Schemby.Providers.Entities;
 using Schemby.Specifications;
 using Index = Schemby.Specifications.Index;
 
-namespace Schemby;
+namespace Schemby.Providers;
 
 /// <summary>
 /// Inspects an Oracle database.

@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Schemby.Oracle\Schemby.Oracle.csproj" />
+    <ProjectReference Include="..\Schemby.Providers.Oracle\Schemby.Providers.Oracle.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Schemby.Entities;
+﻿namespace Schemby.Providers.Entities;
 
 internal enum TableConstraintTypeEntity
 {

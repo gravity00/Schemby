@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Schemby;
+namespace Schemby.Providers;
 
 /// <summary>
 /// Installer for the Oracle provider.
