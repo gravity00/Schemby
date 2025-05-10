@@ -3,6 +3,7 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
+    <RootNamespace>Schemby</RootNamespace>
     <Description>Schemby core definitions shared across all implementations</Description>
   </PropertyGroup>
 

@@ -1,7 +1,6 @@
 <Project>
 
   <PropertyGroup>
-    <RootNamespace>Schemby</RootNamespace>
     <Product>Schemby</Product>
     <Company>Simplesoft</Company>
     <Copyright>Copyright © 2025 João Simões</Copyright>

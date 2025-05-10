@@ -3,6 +3,7 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
+    <RootNamespace>Schemby</RootNamespace>
     <Description>Schemby implementation for Oracle databases</Description>
   </PropertyGroup>
 
