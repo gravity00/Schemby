@@ -8,10 +8,14 @@ public class SchembyOptions
     /// <summary>
     /// Gets or sets a delegate to map database providers.
     /// </summary>
-    public Action<IDictionary<string, IProviderInstaller>>? ProviderMapper { get; set; }
+    public IDictionary<string, IProviderInstaller> Providers { get; } = new Dictionary<string, IProviderInstaller>(
+        StringComparer.OrdinalIgnoreCase
+    );
 
     /// <summary>
     /// Gets or sets a delegate to map serializers.
     /// </summary>
-    public Action<IDictionary<string, ISerializerInstaller>>? SerializerMapper { get; set; }
+    public IDictionary<string, ISerializerInstaller> Serializers { get; } = new Dictionary<string, ISerializerInstaller>(
+        StringComparer.OrdinalIgnoreCase
+    );
 }
