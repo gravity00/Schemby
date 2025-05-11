@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Schemby.Providers;
 
@@ -13,6 +14,6 @@ public class OracleProviderInstaller : IProviderInstaller
         if (services == null) throw new ArgumentNullException(nameof(services));
         if (name == null) throw new ArgumentNullException(nameof(name));
 
-        services.AddKeyedSingleton<IInspector, OracleInspector>(name);
+        services.TryAddKeyedSingleton<IInspector, OracleInspector>(name);
     }
 }

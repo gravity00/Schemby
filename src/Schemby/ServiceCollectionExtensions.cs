@@ -1,4 +1,5 @@
-﻿using Schemby;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Schemby;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
@@ -23,13 +24,13 @@ public static class ServiceCollectionExtensions
         if (services is null) throw new ArgumentNullException(nameof(services));
         if (options is null) throw new ArgumentNullException(nameof(options));
 
-        services.AddSingleton<ISqlRunner, SqlRunner>();
+        services.TryAddSingleton<ISqlRunner, SqlRunner>();
 
-        services.AddSingleton<IInspectorFactory, InspectorFactory>();
+        services.TryAddSingleton<IInspectorFactory, InspectorFactory>();
         foreach (var (name, installer) in options.Providers.Select(e => (e.Key.ToLowerInvariant(), e.Value)))
             installer.Install(services, name);
 
-        services.AddSingleton<ISerializerFactory, SerializerFactory>();
+        services.TryAddSingleton<ISerializerFactory, SerializerFactory>();
         foreach (var (name, installer) in options.Serializers.Select(e => (e.Key.ToLowerInvariant(), e.Value)))
             installer.Install(services, name);
 

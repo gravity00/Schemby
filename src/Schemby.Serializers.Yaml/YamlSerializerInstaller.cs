@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
@@ -17,7 +18,7 @@ public class YamlSerializerInstaller : ISerializerInstaller
         if (services is null) throw new ArgumentNullException(nameof(services));
         if (name is null) throw new ArgumentNullException(nameof(name));
 
-        services.AddSingleton(s =>
+        services.TryAddSingleton(s =>
         {
             var options = s.GetRequiredService<IOptions<YamlSerializerOptions>>().Value;
 
@@ -32,6 +33,6 @@ public class YamlSerializerInstaller : ISerializerInstaller
 
             return serializerBuilder.Build();
         });
-        services.AddKeyedSingleton<ISerializer, YamlSerializer>(name);
+        services.TryAddKeyedSingleton<ISerializer, YamlSerializer>(name);
     }
 }
