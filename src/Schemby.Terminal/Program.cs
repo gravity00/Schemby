@@ -47,6 +47,7 @@ static void ConfigureServices(
 {
     services.AddSchemby(options => options
         .WithOracleProvider()
+        .WithJsonSerializer()
         .WithYamlSerializer()
     );
     services.AddMediator(options =>

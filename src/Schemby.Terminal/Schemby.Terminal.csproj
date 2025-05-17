@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Schemby.Providers.Oracle\Schemby.Providers.Oracle.csproj" />
+    <ProjectReference Include="..\Schemby.Serializers.Json\Schemby.Serializers.Json.csproj" />
     <ProjectReference Include="..\Schemby.Serializers.Yaml\Schemby.Serializers.Yaml.csproj" />
   </ItemGroup>
 
