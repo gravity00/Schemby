@@ -52,8 +52,8 @@ WHERE
 
         sqlBuilder.Append(@"
 ORDER BY
-    T.OWNER,
-    T.TABLE_NAME,
+    NLSSORT(T.OWNER, 'NLS_SORT = BINARY'),
+    NLSSORT(T.TABLE_NAME, 'NLS_SORT = BINARY'),
     C.COLUMN_ID");
 
         return await sqlRunner.QueryAsync<TableColumnViewEntity>(
@@ -107,9 +107,9 @@ WHERE
 
         sqlBuilder.Append(@"
 ORDER BY
-    C.OWNER,
-    C.TABLE_NAME,
-    C.CONSTRAINT_NAME,
+    NLSSORT(C.OWNER, 'NLS_SORT = BINARY'),
+    NLSSORT(C.TABLE_NAME, 'NLS_SORT = BINARY'),
+    NLSSORT(C.CONSTRAINT_NAME, 'NLS_SORT = BINARY'),
     CC.POSITION");
 
         return await sqlRunner.QueryAsync<TableConstraintViewEntity>(
@@ -166,8 +166,8 @@ WHERE
 
         sqlBuilder.Append(@"
 ORDER BY
-    I.OWNER,
-    I.TABLE_NAME,
+    NLSSORT(I.OWNER, 'NLS_SORT = BINARY'),
+    NLSSORT(I.TABLE_NAME, 'NLS_SORT = BINARY'),
     IC.COLUMN_POSITION");
 
         return await sqlRunner.QueryAsync<TableIndexViewEntity>(
