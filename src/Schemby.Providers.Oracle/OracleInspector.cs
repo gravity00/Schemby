@@ -85,13 +85,12 @@ public class OracleInspector(
             ct
         )).GroupBy(e => e.TableName).ToDictionary(e => e.Key);
 
-        var tables = dbColumns.GroupBy(c => c.TableName).Select(g =>
+        var tables = dbColumns.GroupBy(c => c.TableName).ToDictionary(g => g.Key, g =>
         {
-            var columns = g.Select(c =>
+            var columns = g.ToDictionary(c => c.ColumnName, c =>
             {
                 var (type, rawType) = MapColumnType(c.Type, c.Length, c.Precision, c.Scale);
                 return new Column(
-                    c.ColumnName,
                     type,
                     rawType,
                     c.IsNullable,
@@ -103,7 +102,7 @@ public class OracleInspector(
                     Scale = c.Scale,
                     DefaultValue = c.DefaultValue
                 };
-            }).ToArray();
+            });
 
             PrimaryKey? primaryKey;
             if (dbPrimaryKeys.TryGetValue(g.Key, out var dbTablePrimaryKeys))
@@ -168,16 +167,13 @@ public class OracleInspector(
             else
                 indexes = [];
 
-            return new Table(
-                g.Key,
-                columns
-            )
+            return new Table(columns)
             {
                 PrimaryKey = primaryKey,
                 ForeignKeys = foreignKeys,
                 Indexes = indexes
             };
-        }).ToArray();
+        });
 
         return new Database(
             database,

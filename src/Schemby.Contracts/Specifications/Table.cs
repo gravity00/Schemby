@@ -3,11 +3,9 @@
 /// <summary>
 /// Represents a table specification.
 /// </summary>
-/// <param name="Name">The table name</param>
 /// <param name="Columns">Collection of column specifications</param>
 public record Table(
-    string Name,
-    IReadOnlyCollection<Column> Columns
+    IReadOnlyDictionary<string, Column> Columns
 )
 {
     /// <summary>

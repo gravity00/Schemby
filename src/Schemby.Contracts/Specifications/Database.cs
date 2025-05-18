@@ -7,5 +7,5 @@
 /// <param name="Tables">Collection of table specifications</param>
 public record Database(
     string Name,
-    IReadOnlyCollection<Table> Tables
+    IReadOnlyDictionary<string, Table> Tables
 );
