@@ -13,7 +13,9 @@ internal static class SqlRunnerExtensions
         IDbConnection connection,
         string database,
         string? tableFilter,
+        bool isExclusiveTableFilter,
         string? columnFilter,
+        bool isExclusiveColumnFilter,
         CancellationToken ct
     )
     {
@@ -44,11 +46,11 @@ WHERE
 
         if (!string.IsNullOrWhiteSpace(tableFilter))
             sqlBuilder.Append(@"
-    AND T.TABLE_NAME LIKE :TableFilter");
+    AND").AppendIf(isExclusiveTableFilter, " NOT").Append(" REGEXP_LIKE(T.TABLE_NAME, :TableFilter)");
 
         if (!string.IsNullOrWhiteSpace(columnFilter))
             sqlBuilder.Append(@"
-    AND C.COLUMN_NAME LIKE :ColumnFilter");
+    AND").AppendIf(isExclusiveColumnFilter, " NOT").Append(" REGEXP_LIKE(C.COLUMN_NAME, :ColumnFilter)");
 
         sqlBuilder.Append(@"
 ORDER BY
@@ -77,6 +79,7 @@ ORDER BY
         IDbConnection connection,
         string database,
         string? tableFilter,
+        bool isExclusiveTableFilter,
         CancellationToken ct
     )
     {
@@ -103,7 +106,7 @@ WHERE
 
         if (!string.IsNullOrWhiteSpace(tableFilter))
             sqlBuilder.Append(@"
-    AND C.TABLE_NAME LIKE :TableFilter");
+    AND").AppendIf(isExclusiveTableFilter, " NOT").Append(" REGEXP_LIKE(C.TABLE_NAME, :TableFilter)");
 
         sqlBuilder.Append(@"
 ORDER BY
@@ -132,7 +135,9 @@ ORDER BY
         IDbConnection connection,
         string database,
         string? tableFilter,
+        bool isExclusiveTableFilter,
         string? columnFilter,
+        bool isExclusiveColumnFilter,
         CancellationToken ct
     )
     {
@@ -158,11 +163,11 @@ WHERE
 
         if (!string.IsNullOrWhiteSpace(tableFilter))
             sqlBuilder.Append(@"
-    AND I.TABLE_NAME LIKE :TableFilter");
+    AND").AppendIf(isExclusiveTableFilter, " NOT").Append(" REGEXP_LIKE(I.TABLE_NAME, :TableFilter)");
 
         if (!string.IsNullOrWhiteSpace(columnFilter))
             sqlBuilder.Append(@"
-    AND IC.COLUMN_NAME LIKE :ColumnFilter");
+    AND").AppendIf(isExclusiveColumnFilter, " NOT").Append(" REGEXP_LIKE(IC.COLUMN_NAME, :ColumnFilter)");
 
         sqlBuilder.Append(@"
 ORDER BY
@@ -184,5 +189,16 @@ ORDER BY
             },
             ct
         );
+    }
+
+    private static StringBuilder AppendIf(
+        this StringBuilder sb,
+        bool condition,
+        string value
+    )
+    {
+        if(condition)
+            sb.Append(value);
+        return sb;
     }
 }

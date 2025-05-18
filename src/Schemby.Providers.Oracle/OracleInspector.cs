@@ -49,14 +49,18 @@ public class OracleInspector(
             using var db = await ConnectAsync(connectionString, ct);
 
         var tableFilter = options?.TableFilter;
+        var isExclusiveTableFilter = options?.IsExclusiveTableFilter ?? false;
         var columnFilter = options?.ColumnFilter;
+        var isExclusiveColumnFilter = options?.IsExclusiveColumnFilter ?? false;
 
         logger.LogDebug("Inspecting database columns");
         var dbColumns = await sqlRunner.GetColumnsAsync(
             db,
             database,
             tableFilter,
+            isExclusiveTableFilter,
             columnFilter,
+            isExclusiveColumnFilter,
             ct
         );
 
@@ -65,6 +69,7 @@ public class OracleInspector(
             db,
             database,
             tableFilter,
+            isExclusiveTableFilter,
             ct
         )).ToArray();
         var dbPrimaryKeys = dbConstraints.Where(
@@ -81,7 +86,9 @@ public class OracleInspector(
             db,
             database,
             tableFilter,
+            isExclusiveTableFilter,
             columnFilter,
+            isExclusiveColumnFilter,
             ct
         )).GroupBy(e => e.TableName).ToDictionary(e => e.Key);
 

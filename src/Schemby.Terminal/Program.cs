@@ -80,7 +80,9 @@ static int RunInspectVerb(ILogger<Program> logger, IMediator mediator, InspectVe
         Database = verb.Database,
         Output = verb.Output,
         TableFilter = verb.TableFilter,
+        IsExclusiveTableFilter = verb.IsExclusiveTableFilter,
         ColumnFilter = verb.ColumnFilter,
+        IsExclusiveColumnFilter = verb.IsExclusiveColumnFilter,
         Format = (InspectOutputFormat)verb.Format,
 
         Verbose = verb.Verbose,

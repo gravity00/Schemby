@@ -15,7 +15,9 @@ public class InspectCommandHandler(
         var database = await inspector.InspectAsync(cmd.ConnectionString, cmd.Database, new InspectOptions
         {
             TableFilter = cmd.TableFilter,
+            IsExclusiveTableFilter = cmd.IsExclusiveTableFilter,
             ColumnFilter = cmd.ColumnFilter,
+            IsExclusiveColumnFilter = cmd.IsExclusiveColumnFilter,
         }, ct);
 
         var specification = new Specification(

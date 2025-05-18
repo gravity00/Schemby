@@ -21,8 +21,14 @@ public record InspectVerb : Verb
     [Option('t', "table", HelpText = "The table filter expression.")]
     public string? TableFilter { get; init; }
 
+    [Option("exclusive-table", HelpText = "Is the table filter exclusive?")]
+    public bool IsExclusiveTableFilter { get; init; }
+
     [Option('c', "column", HelpText = "The column filter expression.")]
     public string? ColumnFilter { get; init; }
+
+    [Option("exclusive-column", HelpText = "Is the column filter exclusive?")]
+    public bool IsExclusiveColumnFilter { get; init; }
 
     [Option('f', "format", Default = InspectVerbOutputFormat.Yaml, HelpText = "The output format (yaml, json, xml).")]
     public InspectVerbOutputFormat Format { get; init; }

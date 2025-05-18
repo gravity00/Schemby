@@ -12,7 +12,11 @@ public record InspectCommand : Command
 
     public string? TableFilter { get; init; }
 
+    public bool IsExclusiveTableFilter { get; init; }
+
     public string? ColumnFilter { get; init; }
+
+    public bool IsExclusiveColumnFilter { get; init; }
 
     public InspectOutputFormat Format { get; init; }
 
